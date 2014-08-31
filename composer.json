@@ -1,5 +1,6 @@
 {
 
+    "minimum-stability" : "dev",
     "name": "isuvorov/yiirest",
     "version": "1.0.0",
     "description": "Yii Restful API WebApplication",
@@ -12,8 +13,8 @@
     "require": {
         "php": ">=5.3.2",
         "yiisoft/yii": "1.1.*",
-        "starship/restfullyii": "dev-master",
-        "shark/simple_html_dom": "dev-master",
+        "starship/restfullyii": "@dev",
+        "shark/simple_html_dom": "@dev",
         "guzzlehttp/guzzle": "~4.0"
     }
 }
