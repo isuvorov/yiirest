@@ -1,6 +1,7 @@
 {
 
     "name": "isuvorov/yiirest",
+    "version": "1.0.0",
     "description": "Yii Restful API WebApplication",
     "authors": [
         {
