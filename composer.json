@@ -2,8 +2,8 @@
 
     "minimum-stability" : "dev",
     "name": "isuvorov/yiirest",
-    "version": "1.0.0",
-    "description": "Yii Restful API WebApplication FUCK2",
+    "version": "1.0.1",
+    "description": "Yii Restful API WebApplication",
     "authors": [
         {
             "name": "isuvorov",
