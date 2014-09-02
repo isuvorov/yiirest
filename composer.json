@@ -1,8 +1,7 @@
 {
-
     "minimum-stability" : "dev",
     "name": "isuvorov/yiirest",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Yii Restful API WebApplication",
     "authors": [
         {
@@ -13,7 +12,6 @@
     "require": {
         "php": ">=5.3.2",
         "yiisoft/yii": "1.1.*",
-        "codemix/restyii": "*",
         "nodge/yii-eauth": "dev-master",
         "starship/restfullyii" : "*"
     }
