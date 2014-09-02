@@ -1,5 +1,7 @@
 <?php
 
+
+
 class Cipher
 {
     private $securekey, $iv;
