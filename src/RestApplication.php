@@ -13,7 +13,7 @@
  * @author Charles Pick <charles@codemix.com>
  * @package Restyii\Web
  */
-class Application extends \CWebApplication
+class RestApplication extends \CWebApplication
 {
 
     protected function registerCoreComponents()
@@ -21,13 +21,11 @@ class Application extends \CWebApplication
 
         parent::registerCoreComponents();
 
-        require_once(__DIR__.'/components/ActiveRecord.php');
         require_once(__DIR__.'/components/Cipher.php');
-        require_once(__DIR__.'/components/Controller.php');
-        require_once(__DIR__.'/components/RecentComments.php');
-        require_once(__DIR__.'/components/UserIdentity.php');
-        require_once(__DIR__.'/components/ServiceUserIdentity.php');
+        require_once(__DIR__.'/components/RestActiveRecord.php');
         require_once(__DIR__.'/components/RestController.php');
+        require_once(__DIR__.'/components/RestUserIdentity.php');
+        require_once(__DIR__.'/components/ServiceUserIdentity.php');
 
 //        $components=array(
 //            'ActiveRecord' => array(
@@ -58,34 +56,34 @@ class Application extends \CWebApplication
 //    /**
 //     * @return \Restyii\Meta\Schema the schema for the application
 //     */
-    public function getActiveRecord()
-    {
-        return $this->getComponent('ActiveRecord');
-    }
-
-    public function getCipher()
-    {
-        return $this->getComponent('Cipher');
-    }
-
-    public function getRecentComments()
-    {
-        return $this->getComponent('RecentComments');
-    }
-
-    public function getRestController()
-    {
-        return $this->getComponent('RestController');
-    }
-
-    public function getServiceUserIdentity()
-    {
-        return $this->getComponent('ServiceUserIdentity');
-    }
-
-    public function getUserIdentity()
-    {
-        return $this->getComponent('UserIdentity');
-    }
+//    public function getActiveRecord()
+//    {
+//        return $this->getComponent('ActiveRecord');
+//    }
+//
+//    public function getCipher()
+//    {
+//        return $this->getComponent('Cipher');
+//    }
+//
+//    public function getRecentComments()
+//    {
+//        return $this->getComponent('RecentComments');
+//    }
+//
+//    public function getRestController()
+//    {
+//        return $this->getComponent('RestController');
+//    }
+//
+//    public function getServiceUserIdentity()
+//    {
+//        return $this->getComponent('ServiceUserIdentity');
+//    }
+//
+//    public function getUserIdentity()
+//    {
+//        return $this->getComponent('UserIdentity');
+//    }
 
 }

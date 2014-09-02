@@ -1,6 +1,6 @@
 <?php
 
-class ServiceUserIdentity extends UserIdentity
+class ServiceUserIdentity extends RestUserIdentity
 {
 
     const ERROR_NOT_AUTHENTICATED = 3;

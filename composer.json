@@ -1,5 +1,5 @@
 {
-    "minimum-stability" : "dev",
+    "minimum-stability": "dev",
     "name": "isuvorov/yiirest",
     "version": "1.0.2",
     "description": "Yii Restful API WebApplication",
@@ -13,6 +13,11 @@
         "php": ">=5.3.2",
         "yiisoft/yii": "1.1.*",
         "nodge/yii-eauth": "dev-master",
-        "starship/restfullyii" : "*"
+        "starship/restfullyii": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "src"
+        }
     }
 }
