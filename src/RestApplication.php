@@ -1,5 +1,4 @@
 <?php
-asd
 /**
  * # Web Application
  *
