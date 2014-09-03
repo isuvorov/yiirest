@@ -25,6 +25,8 @@ class RestApplication extends \CWebApplication
         require_once(__DIR__.'/components/RestController.php');
         require_once(__DIR__.'/components/RestUserIdentity.php');
         require_once(__DIR__.'/components/ServiceUserIdentity.php');
+        require_once(__DIR__.'/controllers/RestAuthController.php');
+        require_once(__DIR__.'/models/Userlink.php');
 
 //        $components=array(
 //            'ActiveRecord' => array(
