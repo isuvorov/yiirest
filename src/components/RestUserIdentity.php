@@ -8,7 +8,6 @@
 class RestUserIdentity extends CUserIdentity
 {
     protected $_id;
-    protected $photo;
 
     /**
      * Authenticates a user.
@@ -16,6 +15,11 @@ class RestUserIdentity extends CUserIdentity
      */
     public function authenticate()
     {
+        if($this->_id){
+            //?
+            return  true;
+        }
+
         $user = User::model()->find('LOWER(username)=?', array(strtolower($this->username)));
 
         if ($user === null)
@@ -25,7 +29,6 @@ class RestUserIdentity extends CUserIdentity
         else {
             $this->_id = $user->id;
             $this->username = $user->username;
-            $this->setState('photo', Yii::app()->request->baseUrl.'/images/default.jpg');
             $this->errorCode = self::ERROR_NONE;
         }
         return $this->errorCode == self::ERROR_NONE;
@@ -72,10 +75,12 @@ class RestUserIdentity extends CUserIdentity
 
     }
 
-    public function applyDecriptedIdentity($encryptedtext)
+    public function applyEncriptedIdentity($encryptedtext)
     {
         $cipher = new Cipher($this->passphrase);
+//        var_dump($cipher->decrypt($encryptedtext));
         $decryptedtext = $cipher->decryptJson($encryptedtext);
+//        var_dump($decryptedtext);
         if (!$decryptedtext) {
             return 'invalid';
         }
@@ -84,7 +89,11 @@ class RestUserIdentity extends CUserIdentity
         }
 
         return true;
+    }
 
+    public function applyDecriptedIdentity($encryptedtext)
+    {
+        return $this->applyEncriptedIdentity($encryptedtext);
     }
 
 

@@ -22,13 +22,13 @@ class Cipher
         return $this->encrypt(json_encode($object));
     }
 
-    function dencrypt($input)
+    function decrypt($input)
     {
         return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->securekey, base64_decode($input), MCRYPT_MODE_ECB, $this->iv));
     }
 
     function decryptJson($input)
     {
-        return json_decode($this->dencrypt($input), 1);
+        return json_decode($this->decrypt($input), 1);
     }
 }

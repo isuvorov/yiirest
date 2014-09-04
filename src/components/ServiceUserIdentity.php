@@ -15,90 +15,74 @@ class ServiceUserIdentity extends RestUserIdentity
     public function authenticate()
     {
 
-        if (Yii::app()->user->isGuest) {
 
-            $serviceModel = Userlink::model()->findByAttributes(array(
-                'serviceUsername' => $this->service->id,
-            ));
-            /* Если в таблице tbl_service нет записи с таким id,
-            значит сервис не привязан к аккаунту. */
-            if ($serviceModel == null) {
-
-                if ($this->service->isAuthenticated) {
-
-                    $this->Registration();
-//                $this->setState('service', $this->service->serviceName);
-
-                    $this->errorCode = self::ERROR_NONE;
-                } else {
-                    $this->errorCode = self::ERROR_NOT_AUTHENTICATED;
-                }
-            } /* Если запись есть, то используем данные из
-        таблицы tbl_users, используя связь в модели Service */
-            else {
-                $this->_id = $serviceModel->userId;
-                $this->username = $this->service->getAttribute('name');
-                $this->setState('photo', $this->service->getAttribute('photo'));
-                $this->errorCode = self::ERROR_NONE;
-            }
+        if (!$this->service->isAuthenticated) {
+            $this->errorCode = self::ERROR_NOT_AUTHENTICATED;
+            return false;
         }
-        else {
+        $this->errorCode = self::ERROR_NONE;
 
-            $serviceModel = Userlink::model()->findByAttributes(array(
-                'serviceUsername' => $this->service->id,
-            ));
 
-            if ($serviceModel == null) {
-
-                $service = new Userlink();
-                $service->userId = Yii::app()->user->id;
-                $service->serviceUsername = $this->service->id;
-                $service->serviceName = $this->service->getServiceName();
-                $params['photo'] = $this->service->getAttribute('photo');
-                $params['name'] = $this->service->getAttribute('name');
-                $params['url'] = $this->service->getAttribute('url');
-                $service->params = json_encode($params);
-                $service->save();
-
-            } else {
-                $this->_id = $serviceModel->userId;
-                $this->username = $this->service->getAttribute('name');
-                $this->setState('photo', $this->service->getAttribute('photo'));
-                $this->errorCode = self::ERROR_NONE;
-            }
+        /**
+         * проверяем профиль соцсети
+         */
+        $userlink = Userlink::model()->findByAttributes(array(
+            'serviceName' => $this->service->getServiceName(),
+            'serviceUsername' => $this->service->id,
+        ));
+        if (!$userlink) {
+            /**
+             * данный профиль соцсети не привязан, создаем связку
+             */
+            $userlink = new Userlink();
+            $userlink->serviceUsername = $this->service->id;
+            $userlink->serviceName = $this->service->getServiceName();
         }
+
+
+        /**
+         * Вычисляем наш userId
+         */
+        //Проверяем залогинены ли мы
+        $userId = Yii::app()->user->id;
+
+        //Если нет, то пробуем посмотреть в связку с соцсетью
+        if (!$userId) {
+            $userId = $userlink->userId;
+        }
+
+        //Если нет, то регистрируемся
+        if (!$userId) {
+            $user = $this->registration();
+            $userId = $user->id;
+        }
+
+        /**
+         * приязываем\перепривязываем соц сеть
+         * Обновляем атрибуты соцсети
+         */
+        $userlink->userId = $userId;
+        $userlink->params = ['attributes' => $this->service->attributes];
+        $userlink->save();
+
+        $this->_id = $userId;
+
         return !$this->errorCode;
     }
 
-    public function getId()
-    {
-        return $this->_id;
-    }
-
-    public function Registration()
+    public function registration()
     {
 
-        $users = new User();
-        $users->username = $this->service->getAttribute('name');
-        $users->password = md5($this->service->getId());
-        $users->email = $this->service->getServiceName() . '@services.ru';
-        $users->save();
+        $user = new User();
+        $user->username = md5($this->service->getId());
+        $user->password = md5($this->service->getId());
+        $user->email = null;
+        $user->save();
 
-        $service = new Userlink();
-        $service->userId = $users->id;
-        $service->serviceUsername = $this->service->id;
-        $service->serviceName = $this->service->getServiceName();
-        $params['photo'] = $this->service->getAttribute('photo');
-        $params['name'] = $this->service->getAttribute('name');
-        $params['url'] = $this->service->getAttribute('url');
-        $service->params = json_encode($params);
-        $service->save();
-
-        $this->_id = $users->id;
+        $this->_id = $user->id;
         $this->username = $this->service->getAttribute('name');
-        $this->setState('photo', $this->service->getAttribute('photo'));
 
-        return 0;
+        return $user;
 
     }
 

@@ -9,7 +9,7 @@
  * @property string $serviceName
  * @property string $serviceUsername
  */
-class Userlink extends CActiveRecord
+class Userlink extends RestActiveRecord
 {
     /**
      * @return string the associated database table name
@@ -97,5 +97,16 @@ class Userlink extends CActiveRecord
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
+    }
+
+    protected static function types()
+    {
+        return [
+            'id' => 'int',
+            'userId' => 'int',
+            'serviceName' => 'string',
+            'serviceUsername' => 'string',
+            'params' => 'json',
+        ];
     }
 }
