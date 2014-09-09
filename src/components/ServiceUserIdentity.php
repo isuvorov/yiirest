@@ -46,17 +46,23 @@ class ServiceUserIdentity extends RestUserIdentity
         //Проверяем залогинены ли мы
         $userId = Yii::app()->user->id;
 
+//        var_dump($userId);
         //Если нет, то пробуем посмотреть в связку с соцсетью
         if (!$userId) {
             $userId = $userlink->userId;
         }
 
+//        var_dump($userId);
         //Если нет, то регистрируемся
         if (!$userId) {
             $user = $this->registration();
             $userId = $user->id;
         }
+//        var_dump($userId);
 
+        if (!$userId) {
+            throw new Exception('Чтото пошло не так');
+        }
         /**
          * приязываем\перепривязываем соц сеть
          * Обновляем атрибуты соцсети
@@ -77,7 +83,10 @@ class ServiceUserIdentity extends RestUserIdentity
         $user->username = md5($this->service->getId());
         $user->password = md5($this->service->getId());
         $user->email = null;
-        $user->save();
+        if (!$user->save()) {
+            throw new Exception('Cant save user');
+        }
+
 
         $this->_id = $user->id;
         $this->username = $this->service->getAttribute('name');

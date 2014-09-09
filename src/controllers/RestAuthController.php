@@ -75,7 +75,6 @@ class RestAuthController extends RestController
             $authIdentity->redirectUrl = Yii::app()->user->returnUrl;
             $authIdentity->cancelUrl = $this->createAbsoluteUrl('site/login');
 
-
             if ($authIdentity->authenticate()) {
 
                 $identity = new ServiceUserIdentity($authIdentity);
@@ -100,6 +99,9 @@ class RestAuthController extends RestController
 
 //                    exit;
 
+//                    var_dump($data);
+//                    var_dump($_GET['redirect'] . json_encode($data));
+//                    exit;
                     Yii::app()->request->redirect($_GET['redirect'] . json_encode($data));
 
 //                    Yii::app()->request->redirect('http://'.$host['host'].'/auth/social?redirect='.$_GET['redirectUrl'].'&identity={'.$data.'} ' );
